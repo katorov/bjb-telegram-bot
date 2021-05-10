@@ -1,0 +1,40 @@
+version: '3'
+
+services:
+  bjb_telegram_bot_db:
+    image: postgres
+    env_file:
+      - ".env"
+    environment:
+      POSTGRES_PASSWORD: $TELEGRAM_DB_PASSWORD
+      POSTGRES_USER: $TELEGRAM_DB_USER
+      POSTGRES_DB: $TELEGRAM_DB_NAME
+    restart: always
+    ports:
+      - "5431:5432"
+    networks:
+      - bjb_telegram_bot_network
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  bjb_telegram_bot:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: python app.py
+    networks:
+      - bjb_telegram_bot_network
+    restart: always
+    env_file:
+      - ".env"
+    volumes:
+      - .:/src
+    depends_on:
+      - bjb_telegram_bot_db
+
+volumes:
+  pgdata:
+
+networks:
+  bjb_telegram_bot_network:
+    driver: bridge

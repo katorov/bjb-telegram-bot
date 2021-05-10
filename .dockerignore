@@ -1,0 +1,13 @@
+__pycache__
+.idea
+*.pyc
+*.pyo
+*.pyd
+.Python
+env
+pip-log.txt
+.tox
+.coverage
+.coverage.*
+.cache
+.git
